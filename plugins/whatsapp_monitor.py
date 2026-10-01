@@ -31,7 +31,7 @@ PLUGIN = {
     "name": "whatsapp_monitor",
     "description": (
         "Turn on or off the WhatsApp auto-responder. "
-        "When active, Jarvis will read Windows System Notifications for WhatsApp messages, "
+        "When active, Junior will read Windows System Notifications for WhatsApp messages, "
         "generate a smart AI response based on the message content, and automatically send it."
     ),
     "parameters": {
@@ -52,7 +52,7 @@ _replied_notification_ids = set()
 
 def _generate_dynamic_reply(sender, message):
     if not _GENAI_AVAILABLE:
-        return f"Hello, I am Jarvis, Deepak's AI assistant. He is currently busy. I will inform him that you messaged."
+        return f"Hello, I am Junior, Deepak's AI assistant. He is currently busy. I will inform him that you messaged."
         
     try:
         # Load API key from config
@@ -67,12 +67,12 @@ def _generate_dynamic_reply(sender, message):
         client = genai.Client(api_key=api_key)
         
         prompt = (
-            f"You are Jarvis, Deepak's personal AI assistant. Deepak is currently busy working. "
+            f"You are Junior, Deepak's personal AI assistant. Deepak is currently busy working. "
             f"You received a WhatsApp message from '{sender}' which says: '{message}'. "
             f"Write a short, natural, and polite reply on Deepak's behalf. "
             f"Acknowledge what they said. If it is an important update (like a meeting, emergency, or request), "
             f"tell them you will convey it to Deepak immediately. "
-            f"Keep it under 2 sentences. Reply directly as Jarvis."
+            f"Keep it under 2 sentences. Reply directly as Junior."
         )
         
         response = client.models.generate_content(
@@ -82,7 +82,7 @@ def _generate_dynamic_reply(sender, message):
         return response.text.strip()
     except Exception as e:
         print(f"[WhatsApp Monitor] AI generation failed: {e}")
-        return f"Hello, I am Jarvis. Deepak is currently busy, but I will convey your message to him."
+        return f"Hello, I am Junior. Deepak is currently busy, but I will convey your message to him."
 
 async def _get_whatsapp_notifications():
     if not _WINSDK_AVAILABLE:
@@ -126,7 +126,7 @@ def _whatsapp_monitor_loop(player):
     
     if player:
         try:
-            player.write_log("JARVIS: WhatsApp auto-reply with Smart AI is now active.")
+            player.write_log("JUNIOR: WhatsApp auto-reply with Smart AI is now active.")
         except Exception:
             pass
 
@@ -164,14 +164,14 @@ def _whatsapp_monitor_loop(player):
                         except Exception as e:
                             print(f"[WhatsApp Monitor] Could not minimize window: {e}")
                         
-                        # 4. Notify Deepak via JARVIS UI
+                        # 4. Notify Deepak via JUNIOR UI
                         alert_msg = f"Sir, '{sender}' sent you a message: '{message}'. I replied with: '{reply_text}'"
                         if player:
-                            player.write_log(f"JARVIS: 📨 {alert_msg}")
+                            player.write_log(f"JUNIOR: 📨 {alert_msg}")
                             # Writing twice to make sure it's prominent in the UI logs
-                            print(f"[JARVIS UI ALERT] {alert_msg}")
+                            print(f"[JUNIOR UI ALERT] {alert_msg}")
                             
-                            # 5. INJECT into Jarvis's Brain (LLM Context) so he remembers it!
+                            # 5. INJECT into Junior's Brain (LLM Context) so he remembers it!
                             if hasattr(player, 'on_text_command') and callable(player.on_text_command):
                                 internal_memory = (
                                     f"[SYSTEM_ALERT] You just automatically replied to a WhatsApp message in the background.\n"
@@ -183,7 +183,7 @@ def _whatsapp_monitor_loop(player):
                                 try:
                                     player.on_text_command(internal_memory)
                                 except Exception as e:
-                                    print(f"[WhatsApp Monitor] Failed to update Jarvis memory: {e}")
+                                    print(f"[WhatsApp Monitor] Failed to update Junior memory: {e}")
                             
             except Exception as e:
                 print(f"[WhatsApp Monitor] Error processing notifications: {e}")

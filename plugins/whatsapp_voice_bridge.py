@@ -102,7 +102,7 @@ class WhatsAppVoiceBridge:
 
     def start_call_and_bridge(self, contact_name, stt_engine=None, tts_engine=None, llm_func=None):
         if self.state in [CallState.CONVERSATION, CallState.CONNECTING, CallState.CALLING_UNVERIFIED, CallState.CONNECTED_UNVERIFIED]:
-            return "[JARVIS-WA] Already in conversation."
+            return "[JUNIOR-WA] Already in conversation."
             
         self.stt_engine = stt_engine
         self.tts_engine = tts_engine
@@ -139,14 +139,14 @@ class WhatsAppVoiceBridge:
             
         if success_call == "SUCCESS_VERIFIED":
             self.state = CallState.CONNECTING
-            self.log("[JARVIS-WA] Call verified as CONNECTING/OUTGOING via UIA.")
-            logs.append("[JARVIS-WA] Call verified as CONNECTING/OUTGOING via UIA.")
+            self.log("[JUNIOR-WA] Call verified as CONNECTING/OUTGOING via UIA.")
+            logs.append("[JUNIOR-WA] Call verified as CONNECTING/OUTGOING via UIA.")
             self.log("[CALL] waiting for remote answer/audio")
             logs.append("[CALL] waiting for remote answer/audio")
         else:
             self.state = CallState.CALLING_UNVERIFIED
-            self.log("[JARVIS-WA] Call initiated (UIA blind).")
-            logs.append("[JARVIS-WA] Call initiated (UIA blind).")
+            self.log("[JUNIOR-WA] Call initiated (UIA blind).")
+            logs.append("[JUNIOR-WA] Call initiated (UIA blind).")
             self.log("[CALL] waiting for remote answer/audio")
             logs.append("[CALL] waiting for remote answer/audio")
             
@@ -156,14 +156,14 @@ class WhatsAppVoiceBridge:
         in_cable, out_cable, out_name = self._detect_virtual_audio_cable()
         
         if out_cable is None:
-            self.log("[JARVIS-AUDIO] WARNING: No Virtual Audio Cable detected.")
-            self.log("[JARVIS-AUDIO] Exact limitation: WhatsApp Desktop uses Windows audio endpoints. To inject JARVIS's voice into the call, and to capture the remote person's voice without acoustic echo, a Virtual Audio Cable (like VB-Audio Cable) is REQUIRED.")
-            self.log("[JARVIS-AUDIO] Configuration needed: Install VB-Cable. Set WhatsApp Mic -> CABLE Output. Keep WhatsApp Speaker -> System Default.")
-            logs.extend(["[JARVIS-AUDIO] WARNING: No Virtual Audio Cable detected.", "[JARVIS-AUDIO] Exact limitation...", "[JARVIS-AUDIO] Configuration needed..."])
+            self.log("[JUNIOR-AUDIO] WARNING: No Virtual Audio Cable detected.")
+            self.log("[JUNIOR-AUDIO] Exact limitation: WhatsApp Desktop uses Windows audio endpoints. To inject JUNIOR's voice into the call, and to capture the remote person's voice without acoustic echo, a Virtual Audio Cable (like VB-Audio Cable) is REQUIRED.")
+            self.log("[JUNIOR-AUDIO] Configuration needed: Install VB-Cable. Set WhatsApp Mic -> CABLE Output. Keep WhatsApp Speaker -> System Default.")
+            logs.extend(["[JUNIOR-AUDIO] WARNING: No Virtual Audio Cable detected.", "[JUNIOR-AUDIO] Exact limitation...", "[JUNIOR-AUDIO] Configuration needed..."])
             self.wa_mic_device = None
         else:
-            self.log(f"[JARVIS-AUDIO] WhatsApp TTS output device: {out_name} (Index: {out_cable})")
-            logs.append(f"[JARVIS-AUDIO] WhatsApp TTS output device: {out_name} (Index: {out_cable})")
+            self.log(f"[JUNIOR-AUDIO] WhatsApp TTS output device: {out_name} (Index: {out_cable})")
+            logs.append(f"[JUNIOR-AUDIO] WhatsApp TTS output device: {out_name} (Index: {out_cable})")
             self.wa_mic_device = out_cable
             
         self._audio_thread = threading.Thread(target=self._capture_and_process_loop, daemon=True)
@@ -180,9 +180,9 @@ class WhatsAppVoiceBridge:
             CallState.LISTENING, CallState.PROCESSING, CallState.SPEAKING
         ]
         if self.state not in active_states:
-            return "[JARVIS-WA] Not currently in a conversation."
+            return "[JUNIOR-WA] Not currently in a conversation."
             
-        self.log("[JARVIS-WA] Stopping conversation mode...")
+        self.log("[JUNIOR-WA] Stopping conversation mode...")
         self.state = CallState.STOPPING
         self._stop_event.set()
         
@@ -199,13 +199,13 @@ class WhatsAppVoiceBridge:
             self._audio_thread.join(timeout=2.0)
             
         self.state = CallState.ENDED
-        return "[JARVIS-WA] Conversation loop stopped."
+        return "[JUNIOR-WA] Conversation loop stopped."
         
     def hang_up(self):
         self.stop_conversation()
         if self.wa_controller.is_whatsapp_running():
             self.wa_controller.end_call()
-        return "[JARVIS-WA] Call ended and conversation stopped."
+        return "[JUNIOR-WA] Call ended and conversation stopped."
         
 
     def _processing_worker_loop(self):
@@ -274,7 +274,7 @@ class WhatsAppVoiceBridge:
                             adaptive_threshold = max(self.VAD_MIN_THRESHOLD, noise_baseline * 2.2 + 0.5)
                             self.VAD_THRESHOLD = adaptive_threshold
                             
-                            # CRITICAL: Prevent self-hearing. If JARVIS is speaking, processing, or in cooldown, discard audio
+                            # CRITICAL: Prevent self-hearing. If JUNIOR is speaking, processing, or in cooldown, discard audio
                             if self._is_speaking or time.time() < self._cooldown_until or self.state in [CallState.PROCESSING, CallState.SPEAKING]:
                                 speaking = False
                                 silence_frames = 0
@@ -337,7 +337,7 @@ class WhatsAppVoiceBridge:
                     
         finally:
             self._disable_whatsapp_tts_routing()
-            self.log("[JARVIS-WA] Conversation stopped.")
+            self.log("[JUNIOR-WA] Conversation stopped.")
 
     def _process_speech(self, audio_data):
         try:
@@ -345,7 +345,7 @@ class WhatsAppVoiceBridge:
                 return
             
             if not self.stt_engine:
-                self.log("[JARVIS-WA] STT not configured")
+                self.log("[JUNIOR-WA] STT not configured")
                 self.state = CallState.LISTENING
                 self.log(f"[STATE] PROCESSING -> LISTENING")
                 return
@@ -354,7 +354,7 @@ class WhatsAppVoiceBridge:
             audio_flat = audio_data.flatten().astype(np.float32)
             transcript = self.stt_engine.transcribe(audio_flat)
             if not transcript.strip():
-                self.log("[JARVIS-STT] Transcript empty, ignoring.")
+                self.log("[JUNIOR-STT] Transcript empty, ignoring.")
                 self.state = CallState.LISTENING
                 self.log(f"[STATE] PROCESSING -> LISTENING")
                 return
@@ -377,8 +377,8 @@ class WhatsAppVoiceBridge:
                         self._cooldown_until = time.time() + 0.6
                         self.log("[TTS] speaking finished")
                         self.log("[TTS] routing remains active")
-                        self.log("[JARVIS-AUDIO] Flushing stale capture frames")
-                        self.log("[JARVIS-VAD] Reset")
+                        self.log("[JUNIOR-AUDIO] Flushing stale capture frames")
+                        self.log("[JUNIOR-VAD] Reset")
                         if not self._stop_event.is_set():
                             self.state = CallState.LISTENING
                             self.log(f"[STATE] SPEAKING -> LISTENING")
@@ -392,7 +392,7 @@ class WhatsAppVoiceBridge:
                 self.state = CallState.LISTENING
                 self.log(f"[STATE] PROCESSING -> LISTENING")
         except Exception as e:
-            self.log(f"[JARVIS-WA] Pipeline error: {e}")
+            self.log(f"[JUNIOR-WA] Pipeline error: {e}")
             if not self._stop_event.is_set():
                 self.state = CallState.LISTENING
                 self.log(f"[STATE] ERROR -> LISTENING")
@@ -400,7 +400,7 @@ PLUGIN = {
     "name": "whatsapp_voice_bridge",
     "description": (
         "Provides a 2-way AI voice bridge for WhatsApp calls. "
-        "Use this when the user asks JARVIS to 'Call [X] and talk to them', "
+        "Use this when the user asks JUNIOR to 'Call [X] and talk to them', "
         "'Stop talking to them', or 'Hang up the WhatsApp call'."
     ),
     "parameters": {
@@ -462,7 +462,7 @@ def run(parameters: dict, player=None, session_memory=None) -> str:
         def _llm_func(text):
             try:
                 from core.llm_client import call_llm_stream
-                messages = [{"role": "system", "content": "You are JARVIS. Have a brief voice call conversation."}, 
+                messages = [{"role": "system", "content": "You are JUNIOR. Have a brief voice call conversation."}, 
                             {"role": "user", "content": text}]
                 out = ""
                 for msg in call_llm_stream(messages):

@@ -1,6 +1,6 @@
 """
-JARVIS Plugin for KY UFO Drone offline simulation and real-hardware readiness.
-Translates JARVIS natural language intent into drone.controller commands.
+JUNIOR Plugin for KY UFO Drone offline simulation and real-hardware readiness.
+Translates JUNIOR natural language intent into drone.controller commands.
 """
 
 import sys
@@ -206,7 +206,7 @@ def run(parameters: dict, player=None, session_memory=None) -> str:
         )
         if player:
             try:
-                player.write_log(f"JARVIS: {result_text}")
+                player.write_log(f"JUNIOR: {result_text}")
             except Exception:
                 pass
         return result_text
@@ -219,7 +219,7 @@ def run(parameters: dict, player=None, session_memory=None) -> str:
                 result_text = f"Mode: {_controller.mode}\\nTransmission: False\\nError: {res['error']}"
                 if player:
                     try:
-                        player.write_log(f"JARVIS: {result_text}")
+                        player.write_log(f"JUNIOR: {result_text}")
                     except Exception:
                         pass
                 return result_text
@@ -232,7 +232,7 @@ def run(parameters: dict, player=None, session_memory=None) -> str:
             import time
             if player:
                 try:
-                    player.write_log(f"JARVIS: Commencing automatic Pre-Flight Calibration...")
+                    player.write_log(f"JUNIOR: Commencing automatic Pre-Flight Calibration...")
                 except Exception:
                     pass
             _controller.execute_command("calibrate", confirm_physical=True)
@@ -241,7 +241,7 @@ def run(parameters: dict, player=None, session_memory=None) -> str:
             for count in [3, 2, 1]:
                 if player:
                     try:
-                        player.write_log(f"JARVIS: Takeoff in {count}...")
+                        player.write_log(f"JUNIOR: Takeoff in {count}...")
                     except Exception:
                         pass
                 time.sleep(1)
@@ -299,7 +299,7 @@ def run(parameters: dict, player=None, session_memory=None) -> str:
         
     if player:
         try:
-            player.write_log(f"JARVIS: {result_text}")
+            player.write_log(f"JUNIOR: {result_text}")
         except Exception:
             pass
             

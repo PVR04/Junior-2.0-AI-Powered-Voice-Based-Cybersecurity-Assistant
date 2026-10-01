@@ -1,4 +1,4 @@
-﻿# 🤖 JARVIS (MARK LI) — Advanced AI Assistant & Autonomous Voice Agent
+﻿# 🤖 JUNIOR (MARK LI) — Advanced AI Assistant & Autonomous Voice Agent
 
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-3110/)
 [![Tests](https://img.shields.io/badge/unit%20tests-50%20passed-brightgreen.svg)]()
@@ -15,7 +15,7 @@ An autonomous, multi-modal personal AI assistant capable of real-time voice conv
 - **🚀 GPU-Accelerated Speech Processing**: Native CUDA support on NVIDIA GPUs (e.g. RTX 3050+) for ultra-fast Whisper speech-to-text with automatic graceful CPU fallback (int8).
 - **🚁 Drone Flight Control Plugin**: Autonomous physical and simulated drone control for KY-UFO drones with automatic calibration and countdown sequence.
 - **🖥️ Desktop & OS Automation**: Full control over windows, system volume, browser navigation, YouTube, files, apps, and hardware telemetry.
-- **🧩 Zero-Code Plugin Engine**: Drop any .py file into plugins/ and JARVIS dynamically registers the skill on launch with crash isolation.
+- **🧩 Zero-Code Plugin Engine**: Drop any .py file into plugins/ and JUNIOR dynamically registers the skill on launch with crash isolation.
 
 ---
 
@@ -36,8 +36,8 @@ An autonomous, multi-modal personal AI assistant capable of real-time voice conv
 ### 1. Clone the Repository
 
 `powershell
-git clone https://github.com/deestudio028-droid/jarvis.git
-cd jarvis
+git clone https://github.com/deestudio028-droid/junior.git
+cd junior
 `
 
 ### 2. Set Up a Python Virtual Environment
@@ -81,7 +81,7 @@ Edit config/api_keys.json:
         "whatsapp_monitor": true,
         "whatsapp_voice_bridge": true
     },
-    "assistant_name": "JARVIS",
+    "assistant_name": "JUNIOR",
     "user_name": "Sir",
     "ui_color": "#00d4ff"
 }
@@ -111,7 +111,7 @@ To enable two-way AI voice calls through WhatsApp:
 
 ## 🚀 Running the Assistant
 
-### Launching the Full JARVIS HUD Interface
+### Launching the Full JUNIOR HUD Interface
 Starts the futuristic PyQt6 HUD with visual waveforms, telemetry, camera feed, and Gemini Live streaming:
 
 `powershell
@@ -145,7 +145,7 @@ Ollama (llama3.2) Generates Concise Response
        ↓
 EdgeTTS Speaks Response into Virtual Audio Cable
        ↓
-Remote Person Hears JARVIS in Real Time
+Remote Person Hears JUNIOR in Real Time
        ↓
 (Acoustic Cooldown & Self-Hearing Discard)
        ↓
@@ -177,7 +177,7 @@ python -c "from core.llm_client import check_llm_readiness; check_llm_readiness(
 ## 📁 Repository Structure
 
 `	ext
-jarvis/
+junior/
 ├── main.py                          # Main entry point & Gemini Live loop
 ├── ui.py                            # Futuristic PyQt6 interface & HUD
 ├── setup.py                         # First-time configuration wizard

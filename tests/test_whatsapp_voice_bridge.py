@@ -257,7 +257,7 @@ class TestWhatsAppVoiceBridge(unittest.TestCase):
         self.bridge.stt_engine = self.stt
         self.bridge.tts_engine = self.tts
         self.bridge.llm_func = MagicMock(side_effect=RuntimeError("Ollama HTTP 404 Not Found: model 'llama3.2' not found"))
-        self.stt.transcribe.return_value = "Hello Jarvis"
+        self.stt.transcribe.return_value = "Hello Junior"
         import numpy as np
         self.bridge._process_speech(np.zeros(10))
         self.assertEqual(self.bridge.state, CallState.LISTENING)

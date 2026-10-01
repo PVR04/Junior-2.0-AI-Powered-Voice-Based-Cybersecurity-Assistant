@@ -491,7 +491,7 @@ def run(parameters: dict, player=None, session_memory=None) -> str:
 
     if player and logical_intent != "whatsapp_search_test":
         try:
-            player.write_log(f"JARVIS: Searching WhatsApp for '{contact_name}'...")
+            player.write_log(f"JUNIOR: Searching WhatsApp for '{contact_name}'...")
         except:
             pass
 
@@ -512,7 +512,7 @@ def run(parameters: dict, player=None, session_memory=None) -> str:
 
     if player:
         try:
-            player.write_log(f"JARVIS: Calling {contact_name} on WhatsApp.")
+            player.write_log(f"JUNIOR: Calling {contact_name} on WhatsApp.")
         except:
             pass
             
