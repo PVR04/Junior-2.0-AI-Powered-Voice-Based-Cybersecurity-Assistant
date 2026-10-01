@@ -1,24 +1,4 @@
-﻿# 🤖 JUNIOR (MARK LI) — Advanced AI Assistant & Autonomous Voice Agent
-
-[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-3110/)
-[![Tests](https://img.shields.io/badge/unit%20tests-50%20passed-brightgreen.svg)]()
-[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
-
-An autonomous, multi-modal personal AI assistant capable of real-time voice conversations, vision, system automation, autonomous phone calls over WhatsApp Desktop, drone control, and local offline intelligence.
-
----
-
-## 🌟 Key Highlights
-
-- **🎙️ Real-Time 2-Way WhatsApp Voice Bridge**: Automatically calls contacts on WhatsApp Desktop, captures remote voice via WASAPI loopback, detects speech via adaptive VAD, transcribes via CUDA-accelerated aster-whisper, generates contextual responses via Ollama (llama3.2), and speaks back into the call using EdgeTTS and Virtual Audio Cable with self-echo cancellation.
-- **🧠 Hybrid Intelligence**: Works seamlessly with Google Gemini Live API for cloud multimodal streaming, or completely offline with local LLMs (Ollama llama3.2, llama3.1, qwen, gemma).
-- **🚀 GPU-Accelerated Speech Processing**: Native CUDA support on NVIDIA GPUs (e.g. RTX 3050+) for ultra-fast Whisper speech-to-text with automatic graceful CPU fallback (int8).
-- **🚁 Drone Flight Control Plugin**: Autonomous physical and simulated drone control for KY-UFO drones with automatic calibration and countdown sequence.
-- **🖥️ Desktop & OS Automation**: Full control over windows, system volume, browser navigation, YouTube, files, apps, and hardware telemetry.
-- **🧩 Zero-Code Plugin Engine**: Drop any .py file into plugins/ and JUNIOR dynamically registers the skill on launch with crash isolation.
-
----
-
+﻿
 ## 📋 System Prerequisites
 
 | Component | Minimum Requirement | Recommended |
@@ -35,25 +15,22 @@ An autonomous, multi-modal personal AI assistant capable of real-time voice conv
 
 ### 1. Clone the Repository
 
-`powershell
 git clone https://github.com/deestudio028-droid/junior.git
 cd junior
-`
+
 
 ### 2. Set Up a Python Virtual Environment
 
-`powershell
 python -m venv venv
 .\venv\Scripts\activate
-`
 
 ### 3. Install Dependencies
 
 Install all required packages including UI, audio, speech, and Windows automation libraries:
 
-`powershell
 pip install -r requirements.txt
-`
+
+python setup.py
 
 > **Note for PyTorch with CUDA**: If you want GPU acceleration for Whisper on NVIDIA hardware, ensure PyTorch with CUDA is installed:
 > `powershell
