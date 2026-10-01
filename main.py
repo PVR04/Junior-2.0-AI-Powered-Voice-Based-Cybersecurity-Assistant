@@ -88,6 +88,11 @@ SEND_SAMPLE_RATE    = 16000
 RECEIVE_SAMPLE_RATE = 24000
 CHUNK_SIZE          = 1024
 
+# Query system for actual running device indices to bypass ALSA 'default' mismatches
+
+default_input_id  = None
+default_output_id = None
+
 def _get_api_key() -> str:
     with open(API_CONFIG_PATH, "r", encoding="utf-8") as f:
         return json.load(f)["gemini_api_key"]
@@ -98,7 +103,7 @@ def _load_system_prompt() -> str:
         return PROMPT_PATH.read_text(encoding="utf-8")
     except Exception:
         return (
-            "You are JUNIOR, Tony Stark's AI assistant. "
+            "You are JUNIOR, PVR's AI assistant. "
             "Be concise, direct, and always use the provided tools to complete tasks. "
             "Never simulate or guess results — always call the appropriate tool."
         )
@@ -977,6 +982,7 @@ class JarvisLive:
             with sd.InputStream(
                 samplerate=SEND_SAMPLE_RATE,
                 channels=CHANNELS,
+                device=default_input_id, 
                 dtype="int16",
                 blocksize=CHUNK_SIZE,
                 callback=callback,
@@ -1109,6 +1115,7 @@ class JarvisLive:
 
         stream = sd.RawOutputStream(
             samplerate=RECEIVE_SAMPLE_RATE,
+            device=default_output_id,
             channels=CHANNELS,
             dtype="int16",
             blocksize=CHUNK_SIZE,
